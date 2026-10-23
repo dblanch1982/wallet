@@ -1,5 +1,5 @@
 # --- Stage 1: Build mit Maven und Java 25 ---
-FROM maven:3.9.9-eclipse-temurin-25-alpine AS build
+FROM maven:3.9-eclipse-temurin-25-alpine AS build
 WORKDIR /app
 
 # Abhängigkeiten cachen (optimiert die Build-Zeit bei Code-Änderungen)
