@@ -11,7 +11,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # --- Stage 2: Laufzeit-Umgebung mit Apache Tomcat ---
-FROM tomcat:10.1-jdk25-openjdk-alpine
+FROM tomcat:10.1-jdk25-openjdk-slim
 WORKDIR /usr/local/tomcat/webapps/
 
 # Bestehende Tomcat-Standard-Apps löschen für ein sauberes Image
