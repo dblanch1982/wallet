@@ -1,0 +1,79 @@
+name: Build Container
+
+# 1. Hier wird festgelegt, wann der Workflow startet
+on:
+  push:
+    branches:
+        - main        # Startet bei einem Push auf den Branch 'main'
+    paths: [Dockerfile]
+  workflow_dispatch: 
+  
+env:
+    REGISTRY: ghcr.io
+    REPO: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+        contents: read
+        packages: write
+
+    steps:
+    # 1. Code aus dem Repository auschecken
+    - name: Checkout repo
+      uses: actions/checkout@v6
+
+    # 2. Generate image name for docker
+    - name: Generate image name for docker
+      run: |
+        echo "IMAGE_NAME=${REPO,,}" >> ${GITHUB_ENV}
+    
+
+    # 3. Bei der GitHub Container Registry anmelden
+    - name: Log in to the Container registry
+      uses: docker/login-action@v3
+      with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+     # 4. QEMU einrichten (ermöglicht Multi-Plattform-Builds wie amd64 & arm64)
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+      # 5. Docker Buildx einrichten (erweiterte Build-Funktionen)
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+      # 6. Docker-Metadaten generieren (Tags wie 'latest' und Commit-SHA)
+    - name: Extract Docker metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref, event=branch
+          type=ref, event=tag
+          type=raw,value=latest
+          type=sha,format=short
+    # 6. Das Docker-Image bauen und in die Registry pushen
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        # Nutzt automatischen Cache, um zukünftige Builds drastisch zu beschleunigen
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+    
+
+
+
+
+
+
+
