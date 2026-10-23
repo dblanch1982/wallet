@@ -1,7 +1,10 @@
 package com.trading.wallet.controller;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -15,12 +18,14 @@ import com.trading.wallet.service.IWalletService;
 // @CrossOrigin(origins = {"http://localhost:5173"})
 public class WalletController {
 
-    private final IWalletService walletService;
+    private IWalletService walletService;
 
     // Get Wallet Information
     // @CrossOrigin(origins = {"http://localhost:5173"})
-    public ResponseEntity<WalletInformationDto> getWalletInformation() {
-        WalletInformationDto wallet = walletService.fetchWallet();
+
+    @GetMapping(path = "/fetch" , version = "1.0")
+    public ResponseEntity<WalletInformationDto> getWalletInformation((@RequestParam Long walletId) {
+        WalletInformationDto wallet = walletService.fetchWallet(walletId);
         return ResponseEntity.ok().body(wallet);
 
     }
