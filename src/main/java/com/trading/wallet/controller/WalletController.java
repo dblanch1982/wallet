@@ -2,8 +2,8 @@ package com.trading.wallet.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -22,8 +22,8 @@ public class WalletController {
     // Get Wallet Information
     // @CrossOrigin(origins = {"http://localhost:5173"})
 
-    @GetMapping(path = "/fetch/{walletId}" , version = "1.0")
-    public ResponseEntity<WalletInformationDto> getWalletInformation(@PathVariable Long walletId) {
+    @GetMapping
+    public ResponseEntity<WalletInformationDto> getWalletInformation(@RequestParam  Long walletId) {
         WalletInformationDto wallet = walletService.fetchWallet(walletId);
         return ResponseEntity.ok().body(wallet);
 
