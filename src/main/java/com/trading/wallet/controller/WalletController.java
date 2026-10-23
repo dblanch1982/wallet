@@ -24,7 +24,7 @@ public class WalletController {
     // @CrossOrigin(origins = {"http://localhost:5173"})
 
     @GetMapping(path = "/fetch" , version = "1.0")
-    public ResponseEntity<WalletInformationDto> getWalletInformation((@RequestParam Long walletId) {
+    public ResponseEntity<WalletInformationDto> getWalletInformation(@RequestParam Long walletId) {
         WalletInformationDto wallet = walletService.fetchWallet(walletId);
         return ResponseEntity.ok().body(wallet);
 
