@@ -1,0 +1,36 @@
+services:
+  wallet-app:
+    container_name: wallet_application
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      # Beispiel-Umgebungsvariablen für deine App (z.B. für Spring Boot im WAR)
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://wallet-db:5432/walletdb
+      - SPRING_DATASOURCE_USERNAME=wallet_user
+      - SPRING_DATASOURCE_PASSWORD=wallet_secure_pass
+    depends_on:
+      wallet-db:
+        condition: service_healthy
+
+  wallet-db:
+    image: postgres:16-alpine
+    container_name: wallet_database
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=walletdb
+      - POSTGRES_USER=wallet_user
+      - POSTGRES_PASSWORD=wallet_secure_pass
+    volumes:
+      - wallet_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wallet_user -d walletdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  wallet_db_data:

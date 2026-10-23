@@ -1,0 +1,39 @@
+name: Build und Test
+
+# 1. Hier wird festgelegt, wann der Workflow startet
+on:
+  push:
+    branches:
+      # - main        # Startet bei einem Push auf den Branch 'main'
+      # - 'feature/*' # Startet bei allen Branches, die mit 'feature/' beginnen
+      - '*'         # Startet bei JEDEM Branch-Push
+  pull_request:
+    branches:
+      - '*'         # Startet bei JEDEM Pull Request
+  workflow_dispatch: 
+  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Code aus dem Repository auschecken
+    - name: Code auschecken
+      uses: actions/checkout@v6
+
+    # 2. Java-Umgebung (JDK) einrichten
+    - name: Java JDK einrichten
+      uses: actions/setup-java@v6
+      with:
+        java-version: '25' # Hier deine Java-Version eintragen (z. B. 11, 17, 21, 25)
+        distribution: 'temurin' # Beliebte und stabile Java-Distribution
+        cache: 'maven' # Cache beschleunigt zukünftige Builds enorm
+
+    # 3. Projekt bauen und Tests ausführen
+    - name: Mit Maven bauen und testen
+      run: mvn -B package
+
+
+
+
