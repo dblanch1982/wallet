@@ -1,5 +1,5 @@
 # --- Stage 1: Build mit Maven und Java 25 ---
-FROM maven:3.9.9-eclipse-temurin-25-alpine AS build
+FROM maven:3.9-eclipse-temurin-25-alpine AS build
 WORKDIR /app
 
 # Abhängigkeiten cachen (optimiert die Build-Zeit bei Code-Änderungen)
@@ -11,7 +11,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # --- Stage 2: Laufzeit-Umgebung mit Apache Tomcat ---
-FROM tomcat:10.1-jdk25-openjdk-slim
+FROM tomcat:10.1-jdk25-temurin
 WORKDIR /usr/local/tomcat/webapps/
 
 # Bestehende Tomcat-Standard-Apps löschen für ein sauberes Image
