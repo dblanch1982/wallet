@@ -10,7 +10,7 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# --- Stage 2: Laufzeit-Umgebung mit Apache Tomcat ---
+# Stage 2: Laufzeit-Umgebung mit Apache Tomcat ---
 FROM tomcat:10.1-jdk25-temurin
 WORKDIR /usr/local/tomcat/webapps/
 
