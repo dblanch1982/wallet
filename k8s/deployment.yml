@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallet
+  labels:
+    app: wallet
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: wallet
+  template:
+    metadata:
+      labels:
+        app: wallet
+    spec:
+      containers:
+      - name: wallet
+        image: dainablanch/wallet:v1
+        ports:
+        - containerPort: 8080
