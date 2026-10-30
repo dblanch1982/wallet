@@ -36,4 +36,5 @@ jobs:
         git add k8s/deployment.yml
         git commit -m 'docker tag updated by GHA'
         git push origin main
-      
+
+ 
