@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: wallet
-        image: dainablanch/wallet:v1
+        image: dainablanch/wallet:latest
         ports:
         - containerPort: 8080
