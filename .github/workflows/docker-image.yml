@@ -20,7 +20,7 @@ jobs:
       - name: Push  Docker Image to Docker Hub
         run: "docker push dainablanch/wallet:${GITHUB_SHA::7}"
       - name: Install yq
-        run: 
+        run: |
           sudo wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
           sudo chmod +x /usr/bin/yq
       - name: Update deployment.yml with latest docker tag
